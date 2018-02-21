@@ -517,7 +517,7 @@ Create the following functions:
         overlayPaint.let {
             it.reset()
             it.color = ContextCompat.getColor(context, R.color.grey)
-            it.alpha = Math.min(((currentX / width) * 255).toInt(), 80)
+            it.alpha = Math.min(((zeroX / width) * 255).toInt(), 80)
             it.style = Paint.Style.FILL
         }
     }
