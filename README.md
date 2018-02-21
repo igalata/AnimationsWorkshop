@@ -105,6 +105,8 @@ Run the application. Now you can pull from left to right to change the state of 
 to collapse it. Also, notice, that when your menu is expanded, the list is not touchable, which is expected behavior.
 To touch it, collapse the menu.
 
+<img src="guide/touches_handling.gif" width="30%" height="30%"/>
+
 ### Stage 1 - Cubic Bezier curve
 
 Now it's time to start drawing! If we cannot approximate the needed curve using straight lines, we should use 
@@ -228,6 +230,8 @@ Update the `onTouchEvent(event: MotionEvent)` function to force your view to red
 ```
 
 Run the application. Now you can see a piece of menu while pulling it from left to right.
+
+<img src="guide/cubic_bezier_curves.gif" width="30%" height="30%"/>
 
 ### Stage 2 - Expand animation
 
@@ -377,6 +381,8 @@ and create `finishExpandAnimation()` (to straighten the curve and add bounce eff
 
 Run the application. Now our menu can smoothly expand
 
+<img src="guide/expand_animation.gif" width="30%" height="30%"/>
+
 ### Stage 3 - Collapse animation
 
 Update `collapse()` function:
@@ -420,6 +426,8 @@ And add the following function to clear all values:
 
 Run the application. Now the menu can also be collapsed.
 
+<img src="guide/collapse_animation.gif" width="30%" height="30%"/>
+
 ### Stage 4 - Content animation
 
 Add the following functions to create circular reveal animations for the content of our menu:
@@ -462,6 +470,8 @@ Invoke them in `expand()` and `collapse()` respectively:
         ...
     }
 ```
+
+<img src="guide/content_animation.gif" width="30%" height="30%"/>
 
 ### The last stage - overlay
 
@@ -534,6 +544,8 @@ And update `onDraw(canvas: Canvas?)`:
 ```
 
 It seems as if that's all! Run the application
+
+<img src="guide/google-pixel.gif"/>
 
 
 
