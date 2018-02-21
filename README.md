@@ -122,8 +122,8 @@ Add the following variables:
 private var currentX = 0f // coordinates of current user's touch
 private var currentY = 0f
 
-private var paint: Paint? = null
-private var path: Path? = null
+private var paint = Paint()
+private var path = Path()
 
 // random values for gradient
 // change these values to achieve another effect
