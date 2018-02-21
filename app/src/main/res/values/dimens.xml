@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="card_width">210dp</dimen>
+    <dimen name="card_height">210dp</dimen>
+    <dimen name="card_margin">8dp</dimen>
+    <dimen name="image_height">150dp</dimen>
+    <dimen name="small_offset">18dp</dimen>
+    <dimen name="offset">30dp</dimen>
+    <dimen name="pull_offset">60dp</dimen>
+    <dimen name="side_bar_width">300dp</dimen>
+    <dimen name="shadow_width">4dp</dimen>
+</resources>
