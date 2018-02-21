@@ -473,7 +473,7 @@ Invoke them in `expand()` and `collapse()` respectively:
 
 <img src="guide/content_animation.gif" width="30%" height="30%"/>
 
-### The last stage - overlay
+### The last stage - overlay and bounce effect
 
 It's important to bring user's attention to the menu content while it's expanded, not to the content underneath. 
 Let's create an overlay to hide the content.
@@ -541,6 +541,41 @@ And update `onDraw(canvas: Canvas?)`:
         path.reset()
         overlayPath.reset()
     }
+```
+
+To bounce menu when user pulls it from left to right when it's already expanded add a new function:
+
+```kotlin
+    private fun bounce() {
+        ValueAnimator.ofFloat(controlX, sideBarWidth).apply {
+            duration = collapseAnimationDuration / 2
+            interpolator = SpringInterpolator()
+            addUpdateListener {
+                controlX = animatedValue as Float
+                invalidate()
+            }
+        }.start()
+    }
+```
+
+And call it in `ACTION_UP` case in `onTouchEvent(event: MotionEvent)`:
+```kotlin
+      ACTION_UP -> {
+                if (!event.isClick(startX, startY)) {
+                    if (!isExpanded && event.isPulled(startX, pullOffset)) {
+                        expand()
+                    } else if (event.isPulledBack(startX, pullOffset)) {
+                        collapse()
+                    } else if (isExpanded) {
+                        bounce()
+                    } else {
+                        clearData()
+                    }
+                    invalidateNeeded = true
+                } else if (isExpanded) {
+                    collapse()
+                }
+       }
 ```
 
 It seems as if that's all! Run the application
