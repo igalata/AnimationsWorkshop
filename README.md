@@ -105,6 +105,8 @@ Run the application. Now you can pull from left to right to change the state of 
 to collapse it. Also, notice, that when your menu is expanded, the list is not touchable, which is expected behavior.
 To touch it, collapse the menu.
 
+<img src="guide/touches_handling.gif" width="30%" height="30%"/>
+
 ### Stage 1 - Cubic Bezier curve
 
 Now it's time to start drawing! If we cannot approximate the needed curve using straight lines, we should use 
@@ -120,8 +122,8 @@ Add the following variables:
 private var currentX = 0f // coordinates of current user's touch
 private var currentY = 0f
 
-private var paint: Paint? = null
-private var path: Path? = null
+private var paint = Paint()
+private var path = Path()
 
 // random values for gradient
 // change these values to achieve another effect
@@ -228,6 +230,8 @@ Update the `onTouchEvent(event: MotionEvent)` function to force your view to red
 ```
 
 Run the application. Now you can see a piece of menu while pulling it from left to right.
+
+<img src="guide/cubic_bezier_curves.gif" width="30%" height="30%"/>
 
 ### Stage 2 - Expand animation
 
@@ -377,6 +381,8 @@ and create `finishExpandAnimation()` (to straighten the curve and add bounce eff
 
 Run the application. Now our menu can smoothly expand
 
+<img src="guide/expand_animation.gif" width="30%" height="30%"/>
+
 ### Stage 3 - Collapse animation
 
 Update `collapse()` function:
@@ -419,6 +425,8 @@ And add the following function to clear all values:
 ```
 
 Run the application. Now the menu can also be collapsed.
+
+<img src="guide/collapse_animation.gif" width="30%" height="30%"/>
 
 ### Stage 4 - Content animation
 
@@ -463,7 +471,9 @@ Invoke them in `expand()` and `collapse()` respectively:
     }
 ```
 
-### The last stage - overlay
+<img src="guide/content_animation.gif" width="30%" height="30%"/>
+
+### The last stage - overlay and bounce effect
 
 It's important to bring user's attention to the menu content while it's expanded, not to the content underneath. 
 Let's create an overlay to hide the content.
@@ -533,7 +543,44 @@ And update `onDraw(canvas: Canvas?)`:
     }
 ```
 
+To bounce menu when user pulls it from left to right when it's already expanded add a new function:
+
+```kotlin
+    private fun bounce() {
+        ValueAnimator.ofFloat(controlX, sideBarWidth).apply {
+            duration = collapseAnimationDuration / 2
+            interpolator = SpringInterpolator()
+            addUpdateListener {
+                controlX = animatedValue as Float
+                invalidate()
+            }
+        }.start()
+    }
+```
+
+And call it in `ACTION_UP` case in `onTouchEvent(event: MotionEvent)`:
+```kotlin
+      ACTION_UP -> {
+                if (!event.isClick(startX, startY)) {
+                    if (!isExpanded && event.isPulled(startX, pullOffset)) {
+                        expand()
+                    } else if (event.isPulledBack(startX, pullOffset)) {
+                        collapse()
+                    } else if (isExpanded) {
+                        bounce()
+                    } else {
+                        clearData()
+                    }
+                    invalidateNeeded = true
+                } else if (isExpanded) {
+                    collapse()
+                }
+       }
+```
+
 It seems as if that's all! Run the application
+
+<img src="guide/google-pixel.gif"/>
 
 
 
