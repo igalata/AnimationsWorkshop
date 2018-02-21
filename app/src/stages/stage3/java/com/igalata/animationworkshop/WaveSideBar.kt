@@ -63,8 +63,8 @@ class WaveSideBar : FrameLayout {
     private var zeroX = 0f
     private var invertedFraction = 1f
 
-    private var paint: Paint? = null
-    private var path: Path? = null
+    private var paint = Paint()
+    private var path = Path()
 
     private val gradient: LinearGradient
         get() = LinearGradient(600f, 0f, 0f, 1500f, startColorRes,
@@ -129,19 +129,18 @@ class WaveSideBar : FrameLayout {
     }
 
     private fun reset() {
-        path?.reset()
+        path.reset()
     }
 
     private fun init() {
-        paint = Paint().apply {
+        paint.apply {
             shader = gradient
             isAntiAlias = true
         }
-        path = Path()
     }
 
     private fun drawCubicBezierCurve(canvas: Canvas?) {
-        path?.let {
+        path.let {
             it.moveTo(0f, 0f)
             it.lineTo(0f, height.toFloat())
             it.lineTo(zeroX, height.toFloat())
@@ -159,7 +158,7 @@ class WaveSideBar : FrameLayout {
     }
 
     private fun drawQuadBezierCurve(canvas: Canvas?) {
-        path?.let {
+        path.let {
             it.moveTo(0f, 0f)
             it.lineTo(0f, height.toFloat())
             it.lineTo(zeroX, height.toFloat())

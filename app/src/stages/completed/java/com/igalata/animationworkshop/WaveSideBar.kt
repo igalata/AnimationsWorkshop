@@ -65,10 +65,10 @@ class WaveSideBar : FrameLayout {
     private val sideBarWidth: Float
         get() = dpToPx(sideBarWidthRes) + smallOffset
 
-    private var paint: Paint? = null
-    private var overlayPaint: Paint? = null
-    private var path: Path? = null
-    private var overlayPath: Path? = null
+    private var paint = Paint()
+    private var path = Path()
+    private var overlayPaint = Paint()
+    private var overlayPath = Path()
 
     private val gradient: LinearGradient
         get() = LinearGradient(600f, 0f, 0f, 1500f, startColorRes,
@@ -81,16 +81,14 @@ class WaveSideBar : FrameLayout {
     }
 
     private fun init() {
-        paint = Paint().apply {
+        paint.apply {
             shader = gradient
             isAntiAlias = true
         }
-        overlayPaint = Paint().apply {
+        overlayPaint.apply {
             color = ContextCompat.getColor(context, R.color.grey)
             style = Paint.Style.FILL
         }
-        path = Path()
-        overlayPath = Path()
     }
 
     override fun onDraw(canvas: Canvas?) {
@@ -106,13 +104,13 @@ class WaveSideBar : FrameLayout {
     }
 
     private fun reset() {
-        path?.reset()
-        overlayPath?.reset()
+        path.reset()
+        overlayPath.reset()
     }
 
     private fun drawOverlay(canvas: Canvas?) {
         updateOverlay()
-        overlayPath?.let {
+        overlayPath.let {
             it.moveTo(0f, 0f)
             it.lineTo(0f, height.toFloat())
             it.lineTo(width.toFloat(), height.toFloat())
@@ -122,8 +120,17 @@ class WaveSideBar : FrameLayout {
         canvas?.drawPath(overlayPath, overlayPaint)
     }
 
+    private fun updateOverlay() {
+        overlayPaint.let {
+            it.reset()
+            it.color = ContextCompat.getColor(context, R.color.grey)
+            it.alpha = Math.min(((currentX / width) * 255).toInt(), 80)
+            it.style = Paint.Style.FILL
+        }
+    }
+
     private fun drawCubicBezierCurve(canvas: Canvas?) {
-        path?.let {
+        path.let {
             it.moveTo(0f, 0f)
             it.lineTo(0f, height.toFloat())
             it.lineTo(zeroX, height.toFloat())
@@ -141,7 +148,7 @@ class WaveSideBar : FrameLayout {
     }
 
     private fun drawQuadBezierCurve(canvas: Canvas?) {
-        path?.let {
+        path.let {
             it.moveTo(0f, 0f)
             it.lineTo(0f, height.toFloat())
             it.lineTo(zeroX, height.toFloat())
@@ -244,13 +251,6 @@ class WaveSideBar : FrameLayout {
             })
         }.start()
         showContent()
-    }
-
-    private fun updateOverlay() {
-        overlayPaint?.reset()
-        overlayPaint?.color = ContextCompat.getColor(context, R.color.grey)
-        overlayPaint?.alpha = Math.min(((currentX / width) * 255).toInt(), 80)
-        overlayPaint?.style = Paint.Style.FILL
     }
 
     private fun finishExpandAnimation() {

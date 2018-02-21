@@ -35,6 +35,13 @@ class WaveSideBar : FrameLayout {
     @DimenRes
     var sideBarWidthRes = R.dimen.side_bar_width
 
+    private val smallOffset by lazy { dpToPx(R.dimen.small_offset) }
+    private val offset by lazy { dpToPx(R.dimen.offset) }
+    private val pullOffset by lazy { dpToPx(R.dimen.pull_offset) }
+
+    private val sideBarWidth: Float
+        get() = dpToPx(sideBarWidthRes) + smallOffset
+
     constructor(context: Context?) : this(context, null)
     constructor(context: Context?, attrs: AttributeSet?) : this(context, attrs, 0)
     constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {

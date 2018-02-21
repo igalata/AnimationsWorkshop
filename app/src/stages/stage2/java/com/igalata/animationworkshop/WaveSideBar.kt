@@ -53,14 +53,11 @@ class WaveSideBar : FrameLayout {
     private var startX = 0f
     private var startY = 0f
 
-    private var currentX = 0f
+    private var currentX = 0f // coordinates of current user's touch
     private var currentY = 0f
 
-    private var zeroX = 0f
-    private var invertedFraction = 1f
-
-    private var paint: Paint? = null
-    private var path: Path? = null
+    private var paint = Paint()
+    private var path = Path()
 
     private val gradient: LinearGradient
         get() = LinearGradient(600f, 0f, 0f, 1500f, startColorRes,
@@ -122,30 +119,29 @@ class WaveSideBar : FrameLayout {
     }
 
     private fun reset() {
-        path?.reset()
+        path.reset()
     }
 
     private fun init() {
-        paint = Paint().apply {
+        paint.apply {
             shader = gradient
             isAntiAlias = true
         }
-        path = Path()
     }
 
     private fun drawCubicBezierCurve(canvas: Canvas?) {
-        path?.let {
+        path.let {
             it.moveTo(0f, 0f)
             it.lineTo(0f, height.toFloat())
-            it.lineTo(zeroX, height.toFloat())
+            it.lineTo(0f, height.toFloat())
             it.cubicTo(
-                    zeroX, currentY + 3 * offset,
-                    zeroX + currentX * invertedFraction, currentY + 3 * offset,
-                    zeroX + currentX * invertedFraction, currentY)
+                    0f, currentY + 3 * offset,
+                    currentX, currentY + 3 * offset,
+                    currentX, currentY)
             it.cubicTo(
-                    zeroX + currentX * invertedFraction, currentY - 3 * offset,
-                    zeroX, currentY - 3 * offset,
-                    zeroX, 0f)
+                    currentX, currentY - 3 * offset,
+                    0f, currentY - 3 * offset,
+                    0f, 0f)
             it.lineTo(0f, 0f)
         }
         canvas?.drawPath(path, paint)
